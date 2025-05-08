@@ -1,7 +1,7 @@
 ---
-title: "Presentation title"
-subtitle: "Presentation subtitle (if any)"
-author: "Your Name"
+title: "Reinforcing learning increasingly shapes memory specificity from childhood to adulthood"
+subtitle: "Data Science Presentation"
+author: "Beatriz Goncalves"
 institute: "Houghton University"
 date: "`r Sys.Date()`"
 output:
@@ -31,173 +31,170 @@ knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618,
 
 ```{r load-data, include=FALSE}
 # Load your data here
+e1_learning_data <- read.csv("/cloud/project/data/e1_learning_data.csv")
+   
+e2_learning_data <- read.csv("/cloud/project/data/e2_learning_data.csv")
+   
+e1_memory_data <- read.csv("/cloud/project/data/e1_memory_data.csv")
+   
+e1_memory_data <- read.csv("/cloud/project/data/e1_memory_data.csv")
+  
+e1_rl_data <- read.csv("/cloud/project/data/e1_rl_data.csv")
+   
+e1_sub_ages <- read.csv("/cloud/project/data/e1_sub_ages.csv")
+   
+e2_memory_data <- read.csv("/cloud/project/data/e2_memory_data.csv")
+   
+e2_rl_data <- read.csv("/cloud/project/data/e2_rl_data.csv")
+  
+e2_sub_ages <- read.csv("/cloud/project/data/e2_sub_ages.csv")
+   
 ```
 
+
 ```{r}
-style_xaringan(
-  title_slide_background_image = "img/confetti.jpg"
+style_xaringan(title_slide_background_image = "https://images.unsplash.com/photo-1517673132405-a56a62b18caf?q=80&w=2076&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 )
 ```
 
-
+---
 class: center, middle
 
-## A statement of the overall goal / research question
+## Research Question: What is the role of cognitive development in the interaction between reinforcement learning and memory specificity?
+
 
 ---
 
-class: inverse, center, middle
+# Background Information
+-  Kate Nussenbaum and Catherine Hartley conducted a study with New York University on how reinforcement learning increasingly shapes memory specificity from childhood to adulthood. The data was collected through two multi-session online experiments. 
+- In the first session of each experiment, participants completed a reinforcement-learning task in which either specific examples or broader stimulus categories determined the rewards associated with different actions. 
+- In the second session, which was administered one week later, participants completed a memory test in which we probed the specificity of their memories for the stimuli encountered during learning.
 
-# Section title
+
+---
+class:center, middle
+
+# Learning Data Comparison Table
 
 ---
 
-# Hello World
+```{r, echo = FALSE}
 
-- Click the `Knit` button to compile your presentation
+e1_learning_data <- e1_learning_data %>% mutate(experiment = "Experiment 1")
+e2_learning_data <- e2_learning_data %>% mutate(experiment = "Experiment 2")
 
-- Make sure to commit and push all resulting files to your GitHub repo
+learning_sum <- bind_rows(e1_learning_data, e2_learning_data)
+
+kable(head(learning_sum), format = "html")
+
+
+
+```
+---
+
+-The table demonstrates how experiment 1 and experiment 2 are mainly similar, but the main difference is that in experiment 1 they use a reward approach that is associated with broader stimuli. The reasoning behind this reward approach is to enhance learning and memory in those categories so the participants are able to remember the information for experiment 2. 
+
 
 ---
 
-class: inverse, middle, center
-
-# Using xaringan
+# Is there any relation between one's age and one's memory in experiment 2?
 
 ---
 
-# xaringan
+```{r, echo=FALSE}
 
-- The presentation is created using the `xaringan` package
+library(ggplot2)
+library(dplyr)
 
-- Use `---` to separate slides and `--` for incremental builds
 
---
+memory_age2 <- merge(e2_memory_data, e2_sub_ages, by = "subject_id")
 
-- Like this
+memory_age2_clean <- memory_age2 %>%
+  select(age, mem_acc) %>%
+  filter(!is.na(age), !is.na(mem_acc), is.finite(age), is.finite(mem_acc))
 
----
 
-# Layouts
+ggplot(memory_age2_clean, aes(x = age, y = mem_acc)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm", formula = y ~ x, se = TRUE, color = "blue") +
+  labs(title = "Memory Accuracy vs Age (Experiment 2)",
+       x = "Age",
+       y = "Memory Accuracy") +
+  theme_minimal()
 
-You can use plain text
 
-- or bullet points
-
-.pull-left[
-or text in two columns $^*$
-]
-.pull-right[
-- like
-- this
-]
-
-.footnote[
-[*] And add footnotes
-]
-
----
-
-# Code
-
-```{r boring-regression}
-# a boring regression
-model <- lm(dist ~ speed, data = cars)
-tidy(model)
-glance(model)
 ```
 
----
-
-# Plots
-
-```{r recode-species, echo = FALSE}
-# In this chunk I'm doing a bunch of analysis that I don't want to present 
-# in my slides. But I need the resulting data frame for a plot I want to present.
-iris_modified <- iris %>%
-  mutate(Species = fct_other(Species, keep = "setosa"))
-```
-
-```{r plot-iris, echo = FALSE}
-# Code hidden with echo = FALSE
-# Uses modified iris dataset from previous chunk
-# Play around with height and width until you're happy with the look
-ggplot(data = iris_modified, mapping = aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
-  geom_point() + 
-  theme_minimal() # theme options: https://ggplot2.tidyverse.org/reference/ggtheme.html
-```
 
 ---
 
-## Plot and text
 
-.pull-left[
-- Some text
-- goes here
-]
-.pull-right[
-```{r warning=FALSE, out.width="100%", fig.width=4, echo=FALSE}
-# see how I changed out.width and fig.width from defaults
-# to make the figure bigger
-ggplot(penguins, aes(x = bill_length_mm, y = species, color = species)) +
+
+
+- According to the visualization, you notice a slightly negative correlation between one's memory and one's age in experiment 2. Meaning, that according to the plot, older participants tend to have slightly lower memory accuracy. These results may come to a shock because overall some of the older participants perform just as well as the younger ones.
+
+---
+
+
+
+# How is reinforcement learning influential in experiment 1 and experiment 2?
+
+---
+
+
+```{r, echo=FALSE}
+
+e1_rl_data$experiment <- "Experiment 1"
+e2_rl_data$experiment <- "Experiment 2"
+
+e1_rl_data <- e1_rl_data %>%
+  select(subject_id, block_order, trial, points, experiment)
+e2_rl_data <- e2_rl_data %>%
+  select(subject_id, block_order, block_condition, trial, points)
+rl_data <- bind_rows(e1_rl_data, e2_rl_data)
+
+summary <- rl_data %>%
+  group_by(experiment, points) %>%
+  summarise(avg_points = mean(points, na.rm = TRUE), .groups = "drop")
+
+ggplot(summary, aes(x = experiment, y = avg_points, fill = experiment)) + 
   geom_boxplot() +
+  labs(title = "Average Points per Subject by Experiment",
+       x = "Experiment",
+       y = "Average Points") +
   theme_minimal()
 ```
-]
+
 
 ---
 
-# Tables
 
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
 
-```{r iris-table, echo = FALSE}
-kable(head(iris), format = "html")
+```{r, echo=FALSE}
+rl_data %>%
+  group_by(experiment, trial) %>%
+  summarise(mean_points = mean(points, na.rm = TRUE), .groups = "drop") %>%
+  ggplot(aes(x = trial, y = mean_points, color = experiment)) +
+  geom_line(linewidth =1) +
+  labs(title = "Points /over Trials Experiment", 
+       x = "Trial",
+       y = "Mean Points") +
+  theme_minimal()
 ```
 
 ---
 
-# Images
+- The differences between experiment 1 and experiment 2 is that experiment 2 shows higher average points, which suggests improved task design. Experiment 2 has developmental differences, which can be useful to the older participants. In Experiment 1, the scores are similar, but in this experiment it prioritized applying reinforcement cues effectively.
 
-```{r castle, echo = FALSE, out.width = "60%", fig.align = "center", fig.cap = "Image credit: Photo by Jörg Angeli on Unsplash."}
-include_graphics("https://images.unsplash.com/photo-1535448033526-c0e85c9e6968?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80")
-```
 
-Or you can also include a full page image. See next slide.
 
 ---
 
-background-image: url(https://images.unsplash.com/photo-1535448033526-c0e85c9e6968?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80)
-
+# What can one conclude about the effectiveness of reinforcement learning when shaping memory across all ages?
+---
+- This tells us that reinforcement learning increasingly shapes memory specificity from childhood to adulthood by suggesting that as cognitive systems mature, people become better at selectively encoding and applying information that matters for rewards.
 ---
 
-# Math Expressions
-
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. &#36;\alpha+\beta$ renders $\alpha+\beta$. You can use the display style with double dollar signs:
-
-```
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-```
-
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-
-Limitations:
-
-1. The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting `$$` must appear in the very beginning of a line, followed immediately by a non-space character, and the ending `$$` must be at the end of a line, led by a non-space character;
-
-1. There should not be spaces after the opening `$` or before the closing `$`.
-
-1. Math does not work on the title slide (see [#61](https://github.com/yihui/xaringan/issues/61) for a workaround).
+# The End
 
 ---
-
-# Feeling adventurous?
-
-- Want to find out more about `xaringan`? See https://slides.yihui.name/xaringan/#1.
-
-- You are welcomed to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
-
-- But some of you might want to play around with slide styling. The 
-`xaringanthemer` provides some solutions for this that: https://pkg.garrickadenbuie.com/xaringanthemer.
-
-- And if you want more bells and whistles, there is also `xaringanExtra`: https://pkg.garrickadenbuie.com/xaringanExtra.
