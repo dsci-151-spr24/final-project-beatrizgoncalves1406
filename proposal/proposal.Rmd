@@ -1,6 +1,6 @@
 ---
-title: "Project proposal"
-author: "Your name"
+title: "Reinforcing learning increasingly shapes memory specificity from childhood to adulthood"
+author: "Beatriz Goncalves"
 output: github_document
 ---
 
@@ -10,14 +10,41 @@ library(broom)
 ```
 
 ## 1. Introduction
+Kate Nussenbaum and Catherine Hartley conducted a study with New York University on how reinforcement learning increasingly shapes memory specificity from childhood to adulthood. The data was collected through two multi-session online experiments. In the first session of each experiment, participants completed a reinforcement-learning task in which either specific examples or broader stimulus categories determined the rewards associated with different actions. In the second session, which was administered one week later, participants completed a memory test in which we probed the specificity of their memories for the stimuli encountered during learning. The tasks were coded in jsPsych version 6.3.1 and administered online via Pavlovia. Different variables used in the experiments include: e1_learning_data, e1_memory_data, e1_sub_ages, e1_rl_data, e2_learning_data, e2_memory_data, e2_sub_ages, and  e2_rl_data. 
 
 
 
 ## 2. Data
-
+```{r}
+e1_learning_data <- read.csv("/cloud/project/data/e1_learning_data.csv")
+   
+e2_learning_data <- read.csv("/cloud/project/data/e2_learning_data.csv")
+   
+e1_memory_data <- read.csv("/cloud/project/data/e1_memory_data.csv")
+   
+e1_memory_data <- read.csv("/cloud/project/data/e1_memory_data.csv")
+  
+e1_rl_data <- read.csv("/cloud/project/data/e1_rl_data.csv")
+   
+e1_sub_ages <- read.csv("/cloud/project/data/e1_sub_ages.csv")
+   
+e2_memory_data <- read.csv("/cloud/project/data/e2_memory_data.csv")
+   
+e2_rl_data <- read.csv("/cloud/project/data/e2_rl_data.csv")
+  
+e2_sub_ages <- read.csv("/cloud/project/data/e2_sub_ages.csv")
+   
+```
 
 
 ## 3. Data analysis plan
+1. Create a table that shows the learning data in experiment 1 to the learning data in experiment 2. What differences/similarities do you notice?
+
+2. Create a visualization with the `e2_memory_data` and the `e2_sub_ages`. What do you notice about the plot? Is there any relation between one’s age to one’s memory?***My plan is to do a scatter plot in showing the relationship between the age and memory.***
+
+3. Create visuals comparing the `rl_data` from experiment 1 and experiment 2 of `rl_data`. What differences are shown? What does this tell us about reinforcement learning?***I am not quite sure what type of plot I will do, but I will label them by colors and see if there is an increase in memory through reinforcement learning.***
+
+4. What can one conclude about the effectiveness of reinforcement learning when shaping memory across all ages?
 
 
 
